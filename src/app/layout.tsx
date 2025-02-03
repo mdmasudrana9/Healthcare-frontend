@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import Providers from "@/lib/providers/Providers";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,14 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <AppRouterCacheProvider>
-          <body className={inter.className}>{children}</body>
-        </AppRouterCacheProvider>
+        <body className={inter.className}>
+          <AppRouterCacheProvider>
+            <>
+              <Toaster position="bottom-right" />
+              {children}
+            </>
+          </AppRouterCacheProvider>
+        </body>
       </html>
     </Providers>
   );
