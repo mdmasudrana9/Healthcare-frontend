@@ -1,6 +1,8 @@
 "use client";
 
 import { userLogin } from "@/services/actions/userLogin";
+import { storeUserInfo } from "@/services/auth.services";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 export type TLoginForm = {
@@ -9,6 +11,7 @@ export type TLoginForm = {
 };
 
 const LoginPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,8 +22,10 @@ const LoginPage = () => {
     try {
       const res = await userLogin(values);
       console.log(res);
-      if (res?.success === true) {
+      if (res?.data?.accessToken) {
         toast.success(res?.message);
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        router.push("/");
       }
     } catch (error: any) {
       console.log(error.message);

@@ -1,6 +1,8 @@
 "use client";
 
 import { registerPatient } from "@/services/actions/registerPatients";
+import { userLogin } from "@/services/actions/userLogin";
+import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyFormData";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -26,12 +28,19 @@ const Registerpage = () => {
     const data = modifyPayload(values);
     // console.log(data);
     try {
-      const res = await registerPatient(data);
-      if (res?.data?.id) {
-        toast.success(res?.message);
-        router.push("/login");
+      const UseRes = await registerPatient(data);
+      if (UseRes?.data?.id) {
+        toast.success(UseRes?.message);
+        const result = await userLogin({
+          password: values.password,
+          email: values.patient.email,
+        });
+        console.log(result);
+        if (result?.data?.accessToken) {
+          storeUserInfo({ accessToken: result?.data?.accessToken });
+          router.push("/");
+        }
       }
-      console.log(res);
     } catch (error: any) {
       console.log(error.message);
     }
