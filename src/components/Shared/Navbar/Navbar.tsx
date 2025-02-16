@@ -1,5 +1,8 @@
 "use client";
 
+import { authKey } from "@/constants/authKey";
+import { deleteCookies } from "@/services/actions/deleteCookies";
+import { LogoutUser } from "@/services/actions/logoutUser";
 import { getUserInfo, isLoggedIn, removeUser } from "@/services/auth.services";
 import { Stack, Container, Typography, Box, Button } from "@mui/material";
 import Link from "next/link";
@@ -9,9 +12,14 @@ const Navbar = () => {
   const userInfo = getUserInfo();
   const isLogeedIn = isLoggedIn();
   const router = useRouter();
+
   const handleLogout = () => {
-    removeUser();
-    router.refresh();
+    // localStorage.removeItem(authKey);
+    // deleteCookies([authKey, "refreshToken"]);
+    // removeUser();
+    // router.push("/");
+    // router.refresh();
+    LogoutUser(router);
   };
 
   return (

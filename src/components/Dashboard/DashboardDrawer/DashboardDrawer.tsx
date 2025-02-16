@@ -1,7 +1,10 @@
 "use client";
 
 import SideBar from "@/components/Dashboard/sideBar/SideBar";
+import { useGetSingleUserQuery } from "@/redux/api/userApi";
+import { getUserInfo, removeUser } from "@/services/auth.services";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,6 +12,8 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/navigation";
+
 import * as React from "react";
 
 const drawerWidth = 240;
@@ -20,6 +25,10 @@ export default function DashboardDrawer({
 }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const { data, isLoading } = useGetSingleUserQuery({});
+  console.log(data);
+  const userInfo = getUserInfo();
+  const router = useRouter();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -34,6 +43,11 @@ export default function DashboardDrawer({
     if (!isClosing) {
       setMobileOpen(!mobileOpen);
     }
+  };
+
+  const handleLogout = () => {
+    removeUser();
+    router.push("/login");
   };
 
   // Remove this const when copying and pasting into your project.
@@ -63,7 +77,7 @@ export default function DashboardDrawer({
           </IconButton>
           <Box>
             <Typography variant="body2" noWrap component="div" color="gray">
-              Hi , Masud Rana
+              Hi , {data?.name}
             </Typography>
             <Typography
               variant="body2"
@@ -74,6 +88,11 @@ export default function DashboardDrawer({
               Welcome to Health Care
             </Typography>
           </Box>
+          {userInfo?.userId ? (
+            <Button onClick={handleLogout}>Logout</Button>
+          ) : (
+            <></>
+          )}
         </Toolbar>
       </AppBar>
       <Box

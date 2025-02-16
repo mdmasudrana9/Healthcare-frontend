@@ -26,12 +26,12 @@ const Specialist = async () => {
           </Typography>
         </Box>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
-          {specialties.map((specialty: any) => (
+          {specialties.slice(0, 5).map((specialty: any) => (
             <div key={specialty.id} className="p-4 border rounded-lg shadow-md">
               <h6 className="text-lg font-semibold mb-2">{specialty.title}</h6>
               <div className="w-full h-32 relative">
                 <Image
-                  src={image}
+                  src={specialty.icon || image}
                   alt="image"
                   layout="fill"
                   objectFit="contain"

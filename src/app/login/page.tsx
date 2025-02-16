@@ -11,7 +11,7 @@ export type TLoginForm = {
 };
 
 const LoginPage = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -25,7 +25,7 @@ const LoginPage = () => {
       if (res?.data?.accessToken) {
         toast.success(res?.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
-        router.push("/dashboard");
+        // router.push("/dashboard");
       }
     } catch (error: any) {
       console.log(error.message);
